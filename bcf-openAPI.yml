@@ -1,0 +1,1221 @@
+openapi: '3.0.2'
+info:
+  title: BCF OpenAPI
+  version: '2.1'
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /projects:
+    get:
+      summary: Retrieve a collection of projects where the currently logged on user has access to.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/projects'
+              example:
+                [{
+                    "project_id": "F445F4F2-4D02-4B2A-B612-5E456BEF9137",
+                    "name": "Example project 1",
+                    "authorization": {
+                        "project_actions": [
+                            "createTopic",
+                            "createDocument"
+                        ]
+                    }
+                }, {
+                    "project_id": "A233FBB2-3A3B-EFF4-C123-DE22ABC8414",
+                    "name": "Example project 2",
+                    "authorization": {
+                        "project_actions": []
+                    }
+                }]
+  /projects/{project_id}:
+      get:
+        summary: Retrieve a specific project.
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/project_GET'
+                example:
+                  {
+                      "project_id": "B724AAC3-5B2A-234A-D143-AE33CC18414",
+                      "name": "Example project 3",
+                      "authorization": {
+                          "project_actions": [
+                              "update"
+                          ]
+                      }
+                  }
+      put:
+        summary: Modify a specific project. This operation is only possible when the server returns the update flag in the Project authorization, see section 4.1.5
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/project_PUT'
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/project_GET'
+                example:
+                  {
+                      "project_id": "B724AAC3-5B2A-234A-D143-AE33CC18414",
+                      "name": "Example project 3 - Second Section",
+                      "authorization": {
+                          "project_actions": [
+                              "update"
+                          ]
+                      }
+                  }
+  /projects/{project_id}/extensions:
+    get:
+      summary: |
+        Retrieve a specific projects extensions. Project extensions are used to define possible values that can be used in topics and comments, for example topic labels and priorities.
+        They may change during the course of a project. The most recent extensions state which values are valid at a given moment for newly created topics and comments.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/extensions_GET'
+              example:
+                {
+                  "topic_type": [
+                      "Information",
+                      "Error"
+                  ],
+                  "topic_status": [
+                      "Open",
+                      "Closed",
+                      "ReOpened"
+                  ],
+                  "topic_label": [
+                      "Architecture",
+                      "Structural",
+                      "MEP"
+                  ],
+                  "snippet_type": [
+                      ".ifc",
+                      ".csv"
+                  ],
+                  "priority": [
+                      "Low",
+                      "Medium",
+                      "High"
+                  ],
+                  "user_id_type": [
+                      "Architect@example.com",
+                      "BIM-Manager@example.com",
+                      "bob_heater@example.com"
+                  ],
+                  "stage": [
+                      "Preliminary Planning End",
+                      "Construction Start",
+                      "Construction End"
+                  ],
+                  "project_actions": [
+                      "update",
+                      "createTopic",
+                      "createDocument"
+                  ],
+                  "topic_actions": [
+                      "update",
+                      "updateBimSnippet",
+                      "updateRelatedTopics",
+                      "updateDocumentReferences",
+                      "updateFiles",
+                      "createComment",
+                      "createViewpoint"
+                  ],
+                  "comment_actions": [
+                      "update"
+                  ]
+              }
+  /projects/{project_id}/topics:
+    get:
+      summary: Retrieve a collection of topics related to a project (default sort order is creation_date).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/topic_GET'
+              example:
+                [{
+                    "guid": "A245F4F2-2C01-B43B-B612-5E456BEF8116",
+                    "creation_author": "Architect@example.com",
+                    "title": "Example topic 1",
+                    "labels": [
+                        "Architecture",
+                        "Structural"
+                    ],
+                    "creation_date": "2013-10-21T17:34:22.409Z"
+                }, {
+                    "guid": "A211FCC2-3A3B-EAA4-C321-DE22ABC8414",
+                    "creation_author": "Architect@example.com",
+                    "title": "Example topic 2",
+                    "labels": [
+                        "Architecture",
+                        "Heating",
+                        "Electrical"
+                    ],
+                    "creation_date": "2014-11-19T14:24:11.316Z"
+                }]                
+  /projects/{project_id}/topics/{topic_id}:
+    get:
+      summary: Retrieve a specific topic.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_GET'
+              example:
+                {
+                    "guid": "B345F4F2-3A04-B43B-A713-5E456BEF8228",
+                    "creation_author": "Architect@example.com",
+                    "creation_date": "2016-08-01T17:34:22.409Z",
+                    "topic_type": "Clash",
+                    "topic_status": "open",
+                    "title": "Example topic 3",
+                    "priority": "high",
+                    "labels": [
+                        "Architecture",
+                        "Heating"
+                    ],
+                    "assigned_to": "harry.muster@example.com",
+                    "bim_snippet": {
+                        "snippet_type": "clash",
+                        "is_external": true,
+                        "reference": "https://example.com/bcf/1.0/ADFE23AA11BCFF444122BB",
+                        "reference_schema": "https://example.com/bcf/1.0/clash.xsd"
+                    },
+                    "authorization": {
+                        "topic_actions": [
+                            "createComment",
+                            "createViewpoint"
+                        ]
+                    }
+                }  
+    post:
+      summary: Add a new topic. This operation is only possible when the server returns the createTopic flag in the Project authorization, see section 4.1.5
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_POST'      
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_GET'
+              example:    
+    put:
+      summary: Modify a specific topic, description similar to POST. This operation is only possible when the server returns the update flag in the Topic authorization, see section 4.2.8
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_PUT'      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_GET'
+              example:  
+                {
+                    "guid": "B345F4F2-3A04-B43B-A713-5E456BEF8228",
+                    "creation_author": "Architect@example.com",
+                    "creation_date": "2016-08-01T17:34:22.409Z",
+                    "modified_author": "Architect@example.com",
+                    "modified_date": "2016-08-02T13:22:22.409Z",
+                    "topic_type": "Clash",
+                    "topic_status": "open",
+                    "title": "Example topic 3 - Changed Title",
+                    "priority": "high",
+                    "labels": [
+                        "Architecture",
+                        "Heating"
+                    ],
+                    "assigned_to": "harry.muster@example.com",
+                    "bim_snippet": {
+                        "snippet_type": "clash",
+                        "is_external": true,
+                        "reference": "https://example.com/bcf/1.0/ADFE23AA11BCFF444122BB",
+                        "reference_schema": "https://example.com/bcf/1.0/clash.xsd"
+                    }
+                }
+    delete:
+      summary: Deletes a single topic. This operation is only possible when the server returns the delete flag in the Topic authorization, see section 4.2.8
+      responses:
+        '200':
+          description: OK
+  /projects/{project_id}/topics/{guid}/snippet:
+    get:
+      summary: Retrieves a topics BIM-Snippet as binary file.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+    put:
+      summary: |
+        Puts a new BIM Snippet binary file to a topic. If this is used, the parent topics BIM Snippet property is_external must
+        be set to false and the reference must be the file name with extension. This operation is only possible when the server returns the updateBimSnippet
+        flag in the Topic authorization, see section 4.2.8
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OK
+  /projects/{project_id}/topics/{guid}/files:
+    get:
+      summary: |
+        Retrieve a collection of file references as topic header. Implementer Note: The reference property can either be an Uri or a server specific id.
+        Uris are given as absolute paths to the model files while ids reference a custom id of the model file and require custom logic per server to retrieve it.
+        This allows referencing of files on the server but requires clients to know how to retrieve files in a specific implementation.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/file_GET'
+              example:  
+                [{
+                    "ifc_project": "0J$yPqHBD12v72y4qF6XcD",
+                    "file_name": "OfficeBuilding_Architecture_0001.ifc",
+                    "reference": "https://example.com/files/0J$yPqHBD12v72y4qF6XcD_0001.ifc"
+                }, {
+                    "ifc_project": "3hwBHP91jBRwPsmyf$3Hea",
+                    "file_name": "OfficeBuilding_Heating_0003.ifc",
+                    "reference": "cf37bae6-0900-46be-b37f-b34754fe0b4a"
+                }]                
+    put:
+      summary: |
+        Update a collection of file references on the topic header. This operation is only possible when the server returns the updateFiles flag in the Topic authorization,
+        see section 4.2.8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/file_PUT'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/file_GET'
+              example:  
+                [{
+                    "ifc_project": "0J$yPqHBD12v72y4qF6XcD",
+                    "file_name": "OfficeBuilding_Architecture_0001.ifc",
+                    "reference": "https://example.com/files/0J$yPqHBD12v72y4qF6XcD_0001.ifc"
+                }, {
+                    "ifc_project": "3hwBHP91jBRwPsmyf$3Hea",
+                    "file_name": "OfficeBuilding_Heating_0003.ifc",
+                    "reference": "https://example.com/files/3hwBHP91jBRwPsmyf$3Hea_0003.ifc"
+                }]
+  /projects/{project_id}/topics/{guid}/comments:
+    get:
+      summary: Retrieve a collection of all comments related to a topic (default ordering is date).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/comment_GET'
+              example:
+                [{
+                    "guid": "C4215F4D-AC45-A43A-D615-AA456BEF832B",
+                    "date": "2016-08-01T12:34:22.409Z",
+                    "author": "max.muster@example.com",
+                    "comment": "Clash found",
+                    "topic_guid": "B345F4F2-3A04-B43B-A713-5E456BEF8228",
+                    "authorization": {
+                        "comment_actions": [
+                            "update"
+                        ]
+                    }
+                }, {
+                    "guid": "A333FCA8-1A31-CAAC-A321-BB33ABC8414",
+                    "date": "2016-08-01T14:24:11.316Z",
+                    "author": "bob.heater@example.com",
+                    "comment": "will rework the heating model",
+                    "topic_guid": "B345F4F2-3A04-B43B-A713-5E456BEF8228"
+                }]                
+
+
+components:
+  schemas:
+    # public
+    versions_GET:
+      type: object
+      description: Schema for Versions
+      required:
+        - versions
+      properties:
+        versions:
+          type: array
+          items:
+            type: object
+            nullable: true
+            required:
+              - version_id
+            properties:
+              version_id:
+                type: string
+              detailed_version:
+                type: string
+    # user
+    user_GET:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          nullable: true
+    # error
+    error:
+      type: object
+      description: Schema for error, BCF REST API.
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    # authentication
+    auth_GET:
+      type: object
+      properties:
+        oauth2_auth_url:
+          type: string
+          nullable: true
+        oauth2_token_url:
+          type: string
+          nullable: true
+        oauth2_dynamic_client_reg_url:
+          type: string
+          nullable: true
+        http_basic_supported:
+          type: boolean
+          nullable: true
+        supported_oauth2_flows:
+          type: array
+          nullable: true
+          items:
+            type: string
+    dynRegClient_GET:
+      type: object
+      description: Dynamic Client Meta Data
+      required:
+        - client_id
+        - client_secret
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+    dynRegClient_POST:
+      type: object
+      description: Dynamic Client Meta Data
+      required:
+        - client_name
+        - redirect_url
+      properties:
+        client_name:
+          type: string
+          maxLength: 60
+        client_description:
+          type: string
+          maxLength: 4000
+        client_url:
+          type: string
+        redirect_url:
+          type: string
+    # project schemas
+    extensions_GET:
+      type: object
+      properties:
+        topic_type:
+          type: array
+          items:
+            type: string
+        topic_status:
+          type: array
+          items:
+            type: string
+        topic_label:
+          type: array
+          items:
+            type: string
+        snippet_type:
+          type: array
+          items:
+            type: string
+        priority:
+          type: array
+          items:
+            type: string       
+        user_id_type:
+          type: array
+          items:
+            type: string
+        stage:
+          type: array
+          items:
+            type: string
+        project_actions:
+          $ref: '#components/schemas/project_actions'
+        topic_actions:
+          $ref: '#components/schemas/topic_actions'
+        comment_actions:
+          $ref: '#components/schemas/comment_actions'
+    project_GET:
+      type: object
+      properties:
+        project_id:
+          type: string
+        name:
+          type: string
+        authorization:
+          type: object
+          properties:
+            project_actions:
+              $ref: '#components/schemas/project_actions'
+    project_PUT:
+      type: object
+      properties:
+        name:
+          type: string
+    projects:
+      type: array
+      items:
+        $ref: '#components/schemas/project'
+    # actions schemas
+    project_actions:
+      type: array
+      items:
+        enum:
+          - update
+          - createTopic
+          - createDocument
+    topic_actions:
+      type: array
+      items:
+        enum:
+          - update
+          - updateBimSnippet
+          - updateRelatedTopics
+          - updateDocumentReferences
+          - updateFiles
+          - createComment
+          - createViewpoint
+          - delete
+    comment_actions:
+      type: array
+      items:
+        enum:
+          - update
+          - delete
+    event_action:
+      type: object
+      nullable: true
+      required:
+        - type
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+          nullable: true
+    # comment schemas
+    comment_GET:
+      type: object
+      required:
+        - guid
+        - date
+        - comment
+        - topic_guid
+      properties:
+        guid:
+          type: string
+        date:
+          type: string
+        author:
+          type: string
+        comment:
+          type: string
+        topic_guid:
+          type: string
+        viewpoint_guid:
+          type: string
+          nullable: true
+        reply_to_comment_guid:
+          type: string
+          nullable: true
+        modified_date:
+          type: string
+          nullable: true
+        modified_author:
+          type: string
+          nullable: true
+    comment_POST:
+      type: object
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+        viewpoint_guid:
+          type: string
+          nullable: true
+        reply_to_comment_guid:
+          type: string
+          nullable: true
+    # comment_PUT seems to be the same as comment_POST?
+    comment_PUT:
+      type: object
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+        viewpoint_guid:
+          type: string
+          nullable: true
+        reply_to_comment_guid:
+          type: string
+          nullable: true
+    # document schemas
+    document_GET:
+      type: object
+      required:
+        - guid
+        - filename
+      properties:
+        guid:
+          type: string
+        filename:
+          type: string
+    # document references schemas
+    document_reference_GET:
+      description: Schema for a single document reference GET, BCF REST API.
+      type: object
+      required:
+        - guid
+      properties:
+        guid:
+          type: string
+        document_guid:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        desctiption:
+          type: string
+          nullable: true
+    document_reference_POST:
+      type: object
+      properties:
+        document_guid:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        desctiption:
+          type: string
+          nullable: true
+    document_reference_PUT:
+      type: object
+      required:
+        - guid
+      properties:
+        guid:
+          type: string
+        document_guid:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        desctiption:
+          type: string
+          nullable: true
+    # events schemas
+    comment_event_GET:
+      type: object
+      required:
+        - comment_guid
+        - topic_guid
+        - date
+        - author
+      properties:
+        comment_guid:
+          type: string
+        topic_guid:
+          type: string
+        date:
+          type: string
+        author:
+          type: string
+        actions:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#components/schemas/event_action'
+    topic_event_GET:
+      type: object
+      required:
+        - topic_guid
+        - date
+        - author
+      properties:
+        topic_guid:
+          type: string
+        date:
+          type: string
+        author:
+          type: string
+        actions:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/event_action'
+    # file schemas
+    file_GET:
+      description: Schema for a single file GET, BCF REST API.
+      type: object
+      properties:
+        ifc_project:
+          type: string
+          nullable: true
+        ifc_spatial_structure_element:
+          type: string
+          nullable: true
+        file_name:
+          type: string
+          nullable: true
+        date:
+          type: string
+          nullable: true
+        reference:
+          type: string
+          nullable: true
+    file_PUT:
+      type: object
+      properties:
+        ifc_project:
+          type: string
+          nullable: true
+        ifc_spatial_structure_element:
+          type: string
+          nullable: true
+        file_name:
+          type: string
+          nullable: true
+        date:
+          type: string
+          nullable: true
+        reference:
+          type: string
+          nullable: true
+    # related topic schemas
+    related_topic_GET:
+      description: Schema for single related topic GET, BCF REST API.
+      type: object
+      required:
+        - related_topic_guid
+      properties:
+        related_topic_guid:
+          type: string
+    related_topic_PUT:
+      description: Schema for related topic PUT, BCF REST API..
+      type: object
+      required:
+        - related_topic_guid
+      properties:
+        related_topic_guid:
+          type: string
+    # topic schemas
+    bim_snippet:
+      type: object
+      nullable: true
+      required:
+        - snippet_type
+        - is_external
+        - reference
+        - reference_schema
+      properties:
+        snippet_type:
+          type: string
+        is_external:
+          type: string
+        reference:
+          type: string
+        reference_schema:
+          type: string
+    topic_GET:
+      type: object
+      required:
+        - guid
+        - title
+        - creation_date
+        - creation_author
+      properties:
+        guid:
+          type: string
+        topic_type:
+          type: string
+          nullable: true
+        topic_status:
+          type: string
+          nullable: true
+        reference_links:
+          type: array
+          nullable: true
+          items:
+            type: string
+        title:
+          type: string
+        priority:
+          type: string
+          nullable: true
+        index:
+          type: integer
+          nullable: true
+        labels:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        creation_date:
+          type: string
+        creation_author:
+          type: string
+        # shouldnt modified date also be nullable?
+        modified_date:
+          type: string
+        modified_author:
+          type: string
+        assigned_to:
+          type: string
+          nullable: true
+        stage:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        bim_snippet:
+          $ref: '#components/schemas/bim_snippet'
+        due_date:
+          type: string
+          nullable: true
+        authorization:
+          type: object
+          properties:
+            topic_actions:
+              $ref: '#components/schemas/topic_actions'
+            topic_status:
+              type: array
+              nullable: true
+              items:
+                type: string
+    topic_POST:
+      type: object
+      required:
+        - title
+      properties:
+        topic_type:
+          type: string
+          nullable: true
+        topic_status:
+          type: string
+          nullable: true
+        reference_links:
+          type: array
+          nullable: true
+          items:
+            type: string
+        title:
+          type: string
+        priority:
+          type: string
+          nullable: true
+        index:
+          type: integer
+          nullable: true
+        labels:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        assigned_to:
+          type: string
+          nullable: true
+        stage:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        bim_snippet:
+          $ref: '#components/schemas/bim_snippet'
+        due_date:
+          type: string
+          nullable: true
+    topic_PUT:
+      type: object
+      required:
+        - title
+      properties:
+        topic_type:
+          type: string
+          nullable: true
+        topic_status:
+          type: string
+          nullable: true
+        reference_links:
+          type: array
+          nullable: true
+          items:
+            type: string
+        title:
+          type: string
+        priority:
+          type: string
+          nullable: true
+        index:
+          type: integer
+          nullable: true
+        labels:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        assigned_to:
+          type: string
+          nullable: true
+        stage:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        bim_snippet:
+          $ref: '#components/schemas/bim_snippet'
+        due_date:
+          type: string
+          nullable: true
+    # viewpoint schemas
+    bitmap_GET:
+      type: object
+      properties:
+        guid:
+          type: string
+        bitmap_type:
+          type: string
+          enum:
+            - jpg
+            - png
+        location:
+          $ref: '#components/schemas/location'
+        normal:
+          $ref: '#components/schemas/direction'
+        up:
+          $ref: '#components/schemas/direction'
+        height:
+          type: number
+    bitmap_POST:
+      type: object
+      properties:
+        bitmap_type:
+          type: string
+          enum:
+            - jpg
+            - png
+        bitmap_data:
+          type: string
+          format: base64
+        location:
+          $ref: '#components/schemas/location'
+        normal:
+          $ref: '#components/schemas/direction'
+        up:
+          $ref: '#components/schemas/direction'
+        height:
+          type: number
+    clipping_plane:
+      type: object
+      nullable: true
+      properties:
+        location:
+          $ref: '#components/schemas/location'     
+        direction:
+          $ref: '#components/schemas/direction'             
+    coloring:
+      type: object
+      properties:
+        color:
+          type: string
+        components:
+          $ref: '#components/schemas/component_list'
+    coloring_GET:
+      description: Schema for coloring GET, BCF REST API.
+      type: object
+      properties:
+        coloring:
+          type: array
+          nullable: true
+          items:
+            $ref: '#components/schemas/coloring'
+    component:
+      type: object
+      properties:
+        ifc_guid:
+          type: string
+          nullable: true
+        originating_system:
+          type: string
+          nullable: true
+        authoring_tool_id:
+          type: string
+          nullable: true
+    component_list:
+      type: array
+      nullable: true
+      items:
+        $ref: '#components/schemas/component'
+    components:
+      type: object
+      nullable: true
+      properties:
+        selection:
+          $ref: '#components/schemas/component_list'
+        coloring:
+          type: array
+          nullable: true
+          items:
+            $ref: '#components/schemas/coloring'
+        visibility:
+          $ref: '#components/schemas/visibility'
+    direction:
+      type: object
+      properties:
+        x:
+          type: number
+        y:
+          type: number
+        z:
+          type: number
+    line:
+      type: object
+      nullable: true
+      properties:
+        start_point:
+          $ref: '#components/schemas/point'
+        end_point:
+          $ref: '#components/schemas/point'
+    location:
+      type: object
+      properties:
+        x:
+          type: number
+        y:
+          type: number
+        z:
+          type: number    
+    orthogonal_camera:
+      type: object
+      nullable: true
+      properties:
+        camera_view_point:
+          $ref: '#components/schemas/point'
+        camera_direction:
+          $ref: '#components/schemas/direction'
+        view_to_world_scale:
+          type: number
+    perspective_camera:
+      type: object
+      nullable: true
+      properties:
+        camera_view_point:
+          $ref: '#components/schemas/point'
+        camera_direction:
+          $ref: '#components/schemas/direction'
+        camera_up_vector:
+          $ref: '#components/schemas/direction'
+        field_of_view:
+          type: number
+    point:
+      type: object
+      properties:
+        x:
+          type: number
+        y:
+          type: number
+        z:
+          type: number
+    selection_GET:
+      description: Schema for selection GET, BCF REST API.
+      type: object
+      properties:
+        selection:
+          $ref: '#components/schemas/component_list'
+    snapshot_GET:
+      type: object
+      nullable: true
+      properties:
+        snapshot_type:
+          type: string
+          enum:
+            - jpg
+            - png
+    snapshot_POST:
+      type: object
+      nullable: true
+      properties:
+        snapshot_type:
+          type: string
+          enum:
+            - jpg
+            - png
+        snapshot_data:
+          type: string
+          format: base64
+    view_setup_hints:
+      type: object
+      nullable: true
+      properties:
+        spaces_visible:
+          type: boolean
+          default: false
+        space_boundaries_visible:
+          type: boolean
+          default: false
+        openings_visible:
+          type: boolean
+          default: false
+    viewpoint_GET:
+      type: object
+      required:
+        - guid
+      properties:
+        index:
+          type: integer
+          nullable: true
+        guid:
+          type: string
+        orthogonal_camera:
+          $ref: '#components/schemas/orthogonal_camera'
+        perspective_camera:
+          $ref: '#components/schemas/perspective_camera'
+        lines:
+          type: array
+          nullable: true
+          items:
+            $ref: '#components/schemas/lines'
+        clipping_planes:
+          type: array
+          nullable: true
+          $ref: '#components/schemas/clipping_plane'
+        bitmaps:
+          type: array
+          nullable: true
+          items:
+            $ref: '#components/schemas/bitmap_GET'
+        snapshot:
+          $ref: '#components/schemas/snapshot_GET'
+    viewpoint_POST:
+      type: object
+      properties:
+        index:
+          type: integer
+          nullable: true
+        orthogonal_camera:
+          $ref: '#components/schemas/orthogonal_camera'
+        perspective_camera:
+          $ref: '#components/schemas/perspective_camera'
+        lines:
+          type: array
+          nullable: true
+          items:
+            $ref: '#components/schemas/lines'
+        clipping_planes:
+          type: array
+          nullable: true
+          $ref: '#components/schemas/clipping_plane'
+        bitmaps:
+          type: array
+          nullable: true
+          items:
+            $ref: '#components/schemas/bitmap_GET'
+        snapshot:
+          $ref: '#components/schemas/snapshot_GET'
+        # Why cant we get components?
+        components:
+          $ref: '#components/schemas/components'
+    visibility:
+      type: object
+      properties:
+        default_visibility:
+          type: boolean
+          default: false
+        exceptions:
+          $ref: '#components/schemas/component_list'
+        view_setup_hints:
+          $ref: '#components/schemas/view_setup_hints'
+    visibility_GET:
+      type: object
+      properties:
+        visibility:
+          $ref: '#components/schemas/visibility'
