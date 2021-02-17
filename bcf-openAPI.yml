@@ -3,7 +3,10 @@ info:
   title: BCF OpenAPI
   version: '2.1'
 servers:
-  - url: https://api.server.test/v1
+# Relative URLs
+# https://swagger.io/docs/specification/api-host-and-base-path/
+# The server URL defaults to / 
+  - url: /
 paths:
   /bcf/versions:
     get:
