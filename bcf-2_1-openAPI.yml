@@ -319,7 +319,64 @@ paths:
                         "Electrical"
                     ],
                     "creation_date": "2014-11-19T14:24:11.316Z"
-                }]                
+                }]
+    post:
+      summary: Add a new topic. This operation is only possible when the server returns the createTopic flag in the Project authorization, see section 3.1.5
+      tags:
+        - Topics       
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_POST'
+              example: 
+                {
+                    "topic_type": "Clash",
+                    "topic_status": "open",
+                    "title": "Example topic 3",
+                    "priority": "high",
+                    "labels": [
+                        "Architecture",
+                        "Heating"
+                    ],
+                    "assigned_to": "harry.muster@example.com",
+                    "bim_snippet": {
+                        "snippet_type": "clash",
+                        "is_external": true,
+                        "reference": "https://example.com/bcf/1.0/ADFE23AA11BCFF444122BB",
+                        "reference_schema": "https://example.com/bcf/1.0/clash.xsd"
+                    }
+                }              
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_GET'
+              example:   
+                {
+                    "guid": "A245F4F2-2C01-B43B-B612-5E456BEF8116",
+                    "server_assigned_id": "ISSUE-01462",
+                    "creation_author": "Architect@example.com",
+                    "creation_date": "2016-08-01T17:34:22.409Z",
+                    "topic_type": "Clash",
+                    "topic_status": "open",
+                    "title": "Example topic 3",
+                    "priority": "high",
+                    "labels": [
+                        "Architecture",
+                        "Heating"
+                    ],
+                    "assigned_to": "harry.muster@example.com",
+                    "bim_snippet": {
+                        "snippet_type": "clash",
+                        "is_external": true,
+                        "reference": "https://example.com/bcf/1.0/ADFE23AA11BCFF444122BB",
+                        "reference_schema": "https://example.com/bcf/1.0/clash.xsd"
+                    }
+                }          
   /bcf/{version}/projects/{project_id}/topics/{topic_id}:
     parameters:
     - $ref:  "#/components/parameters/version"
@@ -363,24 +420,6 @@ paths:
                         ]
                     }
                 }  
-    post:
-      summary: Add a new topic. This operation is only possible when the server returns the createTopic flag in the Project authorization, see section 4.1.5
-      tags:
-        - Topics       
-      requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/topic_POST'      
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/topic_GET'
-              example:    
     put:
       summary: Modify a specific topic, description similar to POST. This operation is only possible when the server returns the update flag in the Topic authorization, see section 4.2.8
       tags:
@@ -1098,7 +1137,6 @@ paths:
     - $ref:  "#/components/parameters/version"
     - $ref:  "#/components/parameters/project_id"
     - $ref:  "#/components/parameters/topic_id"
-    - $ref:  "#/components/parameters/topic_id"
     get:
       summary: Retrieve a collection of all related topics to a topic.
       tags:
@@ -1212,6 +1250,12 @@ paths:
                     "url": "http://example.com/files/LegalRequirements.pdf",
                     "description": "The legal requirements for buildings."
                 }
+  /bcf/{version}/projects/{project_id}/topics/{topic_id}/document_references/{document_reference_id}:
+    parameters:
+    - $ref:  "#/components/parameters/version"
+    - $ref:  "#/components/parameters/project_id"
+    - $ref:  "#/components/parameters/topic_id"
+    - $ref:  "#/components/parameters/document_reference_id"
     put:
       summary: |
         Update an existing document reference identified by guid. Uses the same rules as POST Document Reference Service.
@@ -1777,6 +1821,7 @@ components:
       required:
         - guid
         - date
+        - author
         - comment
         - topic_guid
       properties:
@@ -1802,6 +1847,11 @@ components:
         modified_author:
           type: string
           nullable: true
+        authorization:
+          type: object
+          properties:
+            comment_actions:
+              $ref:  "#/components/schemas/comment_actions"
     comment_POST:
       type: object
       required:
@@ -2266,6 +2316,7 @@ components:
           $ref: '#components/schemas/point'
     location:
       type: object
+      nullable: true
       properties:
         x:
           type: number
@@ -2281,6 +2332,8 @@ components:
           $ref: '#components/schemas/point'
         camera_direction:
           $ref: '#components/schemas/direction'
+        camera_up_vector:
+          $ref:  "#/components/schemas/direction"
         view_to_world_scale:
           type: number
     perspective_camera:
@@ -2366,7 +2419,8 @@ components:
         clipping_planes:
           type: array
           nullable: true
-          $ref: '#components/schemas/clipping_plane'
+          items:
+            $ref: '#components/schemas/clipping_plane'
         bitmaps:
           type: array
           nullable: true
@@ -2392,14 +2446,15 @@ components:
         clipping_planes:
           type: array
           nullable: true
-          $ref: '#components/schemas/clipping_plane'
+          items:
+            $ref: '#components/schemas/clipping_plane'
         bitmaps:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/bitmap_GET'
+            $ref: '#components/schemas/bitmap_POST'
         snapshot:
-          $ref: '#components/schemas/snapshot_GET'
+          $ref: '#components/schemas/snapshot_POST'
         # Why cant we get components?
         components:
           $ref: '#components/schemas/components'
@@ -2424,6 +2479,7 @@ components:
       name: version
       schema:
         type: string
+        default: 2.1
       required: true
     project_id:
       in: path
@@ -2446,6 +2502,12 @@ components:
     viewpoint_id:
       in: path
       name: viewpoint_id
+      schema:
+        type: string
+      required: true
+    document_reference_id:
+      in: path
+      name: document_reference_id
       schema:
         type: string
       required: true
