@@ -286,6 +286,8 @@ paths:
             |creation_date|creation date of a topic|
             |modified_date|modification date of a topic|
             |index|index of a topic|   
+        - $ref: "#/components/parameters/top"
+        - $ref: "#/components/parameters/skip"
       tags:
         - Topics      
       responses:
@@ -1309,6 +1311,8 @@ paths:
     parameters:
     - $ref:  "#/components/parameters/version"
     - $ref:  "#/components/parameters/project_id"
+    - $ref: "#/components/parameters/top"
+    - $ref: "#/components/parameters/skip"
     get:
       summary: |
         Retrieve a collection of topic events related to a project (default sort order is date).
@@ -1376,6 +1380,8 @@ paths:
     - $ref:  "#/components/parameters/version"
     - $ref:  "#/components/parameters/project_id"
     - $ref:  "#/components/parameters/topic_id"
+    - $ref: "#/components/parameters/top"
+    - $ref: "#/components/parameters/skip"
     get:
       summary: |
         Retrieve a collection of topic events related to a project (default sort order is date).
@@ -1441,6 +1447,8 @@ paths:
     parameters:
     - $ref:  "#/components/parameters/version"
     - $ref:  "#/components/parameters/project_id"
+    - $ref: "#/components/parameters/top"
+    - $ref: "#/components/parameters/skip"
     get:
       summary: |
         Retrieve a collection of comment events related to a project (default sort order is date).
@@ -1512,6 +1520,8 @@ paths:
     - $ref:  "#/components/parameters/project_id"
     - $ref:  "#/components/parameters/topic_id"
     - $ref:  "#/components/parameters/comment_id"
+    - $ref: "#/components/parameters/top"
+    - $ref: "#/components/parameters/skip"
     get:
       summary: |
         Retrieve a collection of comment events related to a comment (default sort order is date).
@@ -2451,3 +2461,13 @@ components:
       schema:
         type: string
       required: true
+    top:
+      in: query
+      name: $top
+      schema:
+        type: string
+    skip: 
+      in: query
+      name: $skip
+      schema:
+        type: string
