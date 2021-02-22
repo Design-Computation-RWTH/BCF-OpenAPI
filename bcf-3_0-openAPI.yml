@@ -603,7 +603,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/comment_GET'
+                  $ref: '#/components/schemas/comment_GET'
               example:
                 [{
                     "guid": "C4215F4D-AC45-A43A-D615-AA456BEF832B",
@@ -643,7 +643,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/comment_GET'
+                $ref: '#/components/schemas/comment_GET'
               example:       
                 {
                   "guid": "A333FCA8-1A31-CAAC-A321-BB33ABC8414",
@@ -668,7 +668,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/comment_GET'
+                $ref: '#/components/schemas/comment_GET'
               example:
                 {
                   "guid": "A333FCA8-1A31-CAAC-A321-BB33ABC8414",
@@ -699,7 +699,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/comment_GET'
+                $ref: '#/components/schemas/comment_GET'
               example:
                 {
                   "guid": "A333FCA8-1A31-CAAC-A321-BB33ABC8414",
@@ -732,7 +732,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/viewpoint_GET'
+                  $ref: '#/components/schemas/viewpoint_GET'
               example:
                 [{
                     "guid": "b24a82e9-f67b-43b8-bda0-4946abf39624",
@@ -938,7 +938,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/viewpoint_GET'
+                $ref: '#/components/schemas/viewpoint_GET'
               example:       
                 {
                     "guid": "a11a82e7-e66c-34b4-ada1-5846abf39133",
@@ -1010,7 +1010,7 @@ paths:
                         "snapshot_type": "png"
                     }
                 }
-  /bcf/{version}/projects/{guid}/topics/{topic_id}/viewpoints/{viewpoint_id}:
+  /bcf/{version}/projects/{project_id}/topics/{topic_id}/viewpoints/{viewpoint_id}:
     parameters:
     - $ref:  "#/components/parameters/version"
     - $ref:  "#/components/parameters/project_id"
@@ -1026,7 +1026,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/viewpoint_GET'
+                $ref: '#/components/schemas/viewpoint_GET'
               example:
                 {
                     "guid": "a11a82e7-e66c-34b4-ada1-5846abf39133",
@@ -1158,7 +1158,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/selection_GET'
+                $ref: '#/components/schemas/selection_GET'
               example:
                 {
                   "selection": [
@@ -1187,7 +1187,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/coloring_GET'
+                $ref: '#/components/schemas/coloring_GET'
               example:
                 {
                     "coloring": [
@@ -1221,7 +1221,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/visibility_GET'
+                $ref: '#/components/schemas/visibility_GET'
               example:
                 {
                     "visibility": {
@@ -1259,7 +1259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/related_topic_GET'
+                  $ref: '#/components/schemas/related_topic_GET'
               example:
                 [{
                     "related_topic_guid": "db49df2b-0e42-473b-a3ee-f7b785d783c4"
@@ -1296,7 +1296,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/related_topic_GET'
+                  $ref: '#/components/schemas/related_topic_GET'
               example:
                 [{
                     "related_topic_guid": "db49df2b-0e42-473b-a3ee-f7b785d783c4"
@@ -1324,7 +1324,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/document_references_GET'
+                  $ref: '#/components/schemas/document_reference_GET'
               example:
                 [{
                     "guid": "212ab37a-6122-448e-86fc-86503183b520",
@@ -1366,7 +1366,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/document_references_GET'
+                $ref: '#/components/schemas/document_reference_GET'
               example:
                 {
                     "guid": "275ab37a-6122-448e-86fc-86503183b520",
@@ -1402,7 +1402,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/document_references_GET'
+                $ref: '#/components/schemas/document_reference_GET'
               example:
                 {
                     "guid": "135ab37a-6122-448e-86fc-86503183b520",
@@ -1427,7 +1427,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/document_GET'
+                  $ref: '#/components/schemas/document_GET'
               example:
                 [{
                     "guid": "472ab37a-6122-448e-86fc-86503183b520",
@@ -1455,7 +1455,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/documents_GET'
+                $ref: '#/components/schemas/document_GET'
               example:
                 {
                     "guid": "472ab37a-6122-448e-86fc-86503183b520",
@@ -1524,7 +1524,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/topic_event_GET'
+                  $ref: '#/components/schemas/topic_event_GET'
               example:
                 [{
                     "topic_guid": "A211FCC2-3A3B-EAA4-C321-DE22ABC8414",
@@ -1592,7 +1592,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/topic_event_GET'
+                  $ref: '#/components/schemas/topic_event_GET'
               example:
                 [{
                     "topic_guid": "A245F4F2-2C01-B43B-B612-5E456BEF8116",
@@ -1661,7 +1661,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/comment_event_GET'
+                  $ref: '#/components/schemas/comment_event_GET'
               example:
                 [{
                     "comment_guid": "C4215F4D-AC45-A43A-D615-AA456BEF832B",
@@ -1732,7 +1732,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/comment_event_GET'
+                  $ref: '#/components/schemas/comment_event_GET'
               example:
                 [{
                     "comment_guid": "C4215F4D-AC45-A43A-D615-AA456BEF832B",
@@ -1759,36 +1759,6 @@ paths:
                 }]
 components:
   schemas:
-    # public
-    versions_GET:
-      type: object
-      description: Schema for Versions
-      required:
-        - versions
-      properties:
-        versions:
-          type: array
-          items:
-            type: object
-            nullable: true
-            required:
-              - version_id
-            properties:
-              version_id:
-                type: string
-              detailed_version:
-                type: string
-    # user
-    user_GET:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-          nullable: true
     # error
     error:
       type: object
@@ -1853,11 +1823,11 @@ components:
             type: string
             nullable: true
         project_actions:
-          $ref: '#components/schemas/project_actions'
+          $ref: '#/components/schemas/project_actions'
         topic_actions:
-          $ref: '#components/schemas/topic_actions'
+          $ref: '#/components/schemas/topic_actions'
         comment_actions:
-          $ref: '#components/schemas/comment_actions'
+          $ref: '#/components/schemas/comment_actions'
     project_GET:
       type: object
       description: Schema for single project GET, BCF REST API.
@@ -1873,7 +1843,7 @@ components:
           type: object
           properties:
             project_actions:
-              $ref: '#components/schemas/project_actions'
+              $ref: '#/components/schemas/project_actions'
     project_PUT:
       type: object
       description: Schema for project PUT, BCF REST API.
@@ -1885,7 +1855,7 @@ components:
     projects:
       type: array
       items:
-        $ref: '#components/schemas/project'
+        $ref: '#/components/schemas/project_GET'
     # actions schemas
     project_actions:
       type: array
@@ -2076,7 +2046,7 @@ components:
           type: array
           minItems: 1
           items:
-            $ref: '#components/schemas/event_action'
+            $ref: '#/components/schemas/event_action'
     topic_event_GET:
       type: object
       required:
@@ -2253,7 +2223,7 @@ components:
           type: string
           nullable: true
         bim_snippet:
-          $ref: '#components/schemas/bim_snippet'
+          $ref: '#/components/schemas/bim_snippet'
         due_date:
           type: string
           nullable: true
@@ -2261,7 +2231,7 @@ components:
           type: object
           properties:
             topic_actions:
-              $ref: '#components/schemas/topic_actions'
+              $ref: '#/components/schemas/topic_actions'
             topic_status:
               type: array
               nullable: true
@@ -2310,7 +2280,7 @@ components:
           type: string
           nullable: true
         bim_snippet:
-          $ref: '#components/schemas/bim_snippet'
+          $ref: '#/components/schemas/bim_snippet'
         due_date:
           type: string
           nullable: true
@@ -2354,7 +2324,7 @@ components:
           type: string
           nullable: true
         bim_snippet:
-          $ref: '#components/schemas/bim_snippet'
+          $ref: '#/components/schemas/bim_snippet'
         due_date:
           type: string
           nullable: true
@@ -2370,11 +2340,11 @@ components:
             - jpg
             - png
         location:
-          $ref: '#components/schemas/location'
+          $ref: '#/components/schemas/location'
         normal:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         up:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         height:
           type: number
     bitmap_POST:
@@ -2389,11 +2359,11 @@ components:
           type: string
           format: base64
         location:
-          $ref: '#components/schemas/location'
+          $ref: '#/components/schemas/location'
         normal:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         up:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         height:
           type: number
     clipping_plane:
@@ -2401,16 +2371,16 @@ components:
       nullable: true
       properties:
         location:
-          $ref: '#components/schemas/location'     
+          $ref: '#/components/schemas/location'     
         direction:
-          $ref: '#components/schemas/direction'             
+          $ref: '#/components/schemas/direction'             
     coloring:
       type: object
       properties:
         color:
           type: string
         components:
-          $ref: '#components/schemas/component_list'
+          $ref: '#/components/schemas/component_list'
     coloring_GET:
       description: Schema for coloring GET, BCF REST API.
       type: object
@@ -2419,7 +2389,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/coloring'
+            $ref: '#/components/schemas/coloring'
     component:
       type: object
       properties:
@@ -2436,20 +2406,20 @@ components:
       type: array
       nullable: true
       items:
-        $ref: '#components/schemas/component'
+        $ref: '#/components/schemas/component'
     components:
       type: object
       nullable: true
       properties:
         selection:
-          $ref: '#components/schemas/component_list'
+          $ref: '#/components/schemas/component_list'
         coloring:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/coloring'
+            $ref: '#/components/schemas/coloring'
         visibility:
-          $ref: '#components/schemas/visibility'
+          $ref: '#/components/schemas/visibility'
     direction:
       type: object
       properties:
@@ -2464,9 +2434,9 @@ components:
       nullable: true
       properties:
         start_point:
-          $ref: '#components/schemas/point'
+          $ref: '#/components/schemas/point'
         end_point:
-          $ref: '#components/schemas/point'
+          $ref: '#/components/schemas/point'
     location:
       type: object
       nullable: true
@@ -2482,9 +2452,9 @@ components:
       nullable: true
       properties:
         camera_view_point:
-          $ref: '#components/schemas/point'
+          $ref: '#/components/schemas/point'
         camera_direction:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         camera_up_vector:
           $ref:  "#/components/schemas/direction"
         view_to_world_scale:
@@ -2496,11 +2466,11 @@ components:
       nullable: true
       properties:
         camera_view_point:
-          $ref: '#components/schemas/point'
+          $ref: '#/components/schemas/point'
         camera_direction:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         camera_up_vector:
-          $ref: '#components/schemas/direction'
+          $ref: '#/components/schemas/direction'
         field_of_view:
           type: number
         aspect_ratio:
@@ -2519,7 +2489,7 @@ components:
       type: object
       properties:
         selection:
-          $ref: '#components/schemas/component_list'
+          $ref: '#/components/schemas/component_list'
     snapshot_GET:
       type: object
       nullable: true
@@ -2565,26 +2535,26 @@ components:
         guid:
           type: string
         orthogonal_camera:
-          $ref: '#components/schemas/orthogonal_camera'
+          $ref: '#/components/schemas/orthogonal_camera'
         perspective_camera:
-          $ref: '#components/schemas/perspective_camera'
+          $ref: '#/components/schemas/perspective_camera'
         lines:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/lines'
+            $ref: '#/components/schemas/line'
         clipping_planes:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/clipping_plane'
+            $ref: '#/components/schemas/clipping_plane'
         bitmaps:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/bitmap_GET'
+            $ref: '#/components/schemas/bitmap_GET'
         snapshot:
-          $ref: '#components/schemas/snapshot_GET'
+          $ref: '#/components/schemas/snapshot_GET'
         authorization:
           type: object
           properties:
@@ -2600,29 +2570,29 @@ components:
           type: integer
           nullable: true
         orthogonal_camera:
-          $ref: '#components/schemas/orthogonal_camera'
+          $ref: '#/components/schemas/orthogonal_camera'
         perspective_camera:
-          $ref: '#components/schemas/perspective_camera'
+          $ref: '#/components/schemas/perspective_camera'
         lines:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/lines'
+            $ref: '#/components/schemas/line'
         clipping_planes:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/clipping_plane'
+            $ref: '#/components/schemas/clipping_plane'
         bitmaps:
           type: array
           nullable: true
           items:
-            $ref: '#components/schemas/bitmap_POST'
+            $ref: '#/components/schemas/bitmap_POST'
         snapshot:
-          $ref: '#components/schemas/snapshot_POST'
+          $ref: '#/components/schemas/snapshot_POST'
         # Why cant we get components?
         components:
-          $ref: '#components/schemas/components'
+          $ref: '#/components/schemas/components'
     visibility:
       type: object
       properties:
@@ -2630,14 +2600,14 @@ components:
           type: boolean
           default: false
         exceptions:
-          $ref: '#components/schemas/component_list'
+          $ref: '#/components/schemas/component_list'
         view_setup_hints:
-          $ref: '#components/schemas/view_setup_hints'
+          $ref: '#/components/schemas/view_setup_hints'
     visibility_GET:
       type: object
       properties:
         visibility:
-          $ref: '#components/schemas/visibility'
+          $ref: '#/components/schemas/visibility'
   parameters:
     version:
       in: path
@@ -2678,7 +2648,7 @@ components:
       required: true
     bitmap_id:
       in: path
-      name: viewpoint_id
+      name: bitmap_id
       schema:
         type: string
       required: true
